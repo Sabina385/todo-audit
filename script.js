@@ -2,8 +2,26 @@ const form = document.getElementById('todo-form');
 const input = document.getElementById('todo-input');
 const todoList = document.getElementById('todo-list');
 
-let tasks = [];
-let nextId = 1;
+const STORAGE_KEY = 'todo-audit.tasks';
+
+function load() {
+  try {
+    return Todo.deserialize(localStorage.getItem(STORAGE_KEY));
+  } catch (e) {
+    return [];
+  }
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, Todo.serialize(tasks));
+  } catch (e) {
+    /* storage unavailable: app keeps working in memory */
+  }
+}
+
+let tasks = load();
+let nextId = Todo.nextIdFor(tasks);
 
 function createItem(task) {
   const li = document.createElement('li');
@@ -39,6 +57,7 @@ function createItem(task) {
 }
 
 function render() {
+  save();
   todoList.textContent = '';
   tasks.forEach((task) => todoList.appendChild(createItem(task)));
 }
@@ -54,3 +73,5 @@ form.addEventListener('submit', (event) => {
     input.focus();
   }
 });
+
+render();

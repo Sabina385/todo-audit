@@ -2,7 +2,15 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { normalizeTask, addTask, toggleTask, removeTask } = require('../todo.js');
+const {
+  normalizeTask,
+  addTask,
+  toggleTask,
+  removeTask,
+  nextIdFor,
+  serialize,
+  deserialize,
+} = require('../todo.js');
 
 test('AC1: adds a non-empty task and trims it', () => {
   const result = addTask([], '  buy milk  ', 1);
@@ -68,4 +76,24 @@ test('AC5: XSS-like text remains a plain string in task data', () => {
 test('AC5 static check: UI code avoids HTML-injecting APIs', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'script.js'), 'utf8');
   assert.doesNotMatch(source, /innerHTML|outerHTML|insertAdjacentHTML|document\.write/);
+});
+
+test('AC6: serialize/deserialize round-trips tasks', () => {
+  const tasks = addTask(addTask([], 'a', 1), 'b', 2);
+  assert.deepEqual(deserialize(serialize(tasks)), tasks);
+});
+
+test('AC6: deserialize returns [] for corrupt or null data', () => {
+  assert.deepEqual(deserialize('{bad json'), []);
+  assert.deepEqual(deserialize(null), []);
+  assert.deepEqual(deserialize('{"a":1}'), []);
+});
+
+test('AC6: deserialize drops malformed items', () => {
+  assert.equal(deserialize('[{"id":1,"text":"ok","done":false},{"id":"x"}]').length, 1);
+});
+
+test('R8: nextIdFor never reuses an existing id', () => {
+  assert.equal(nextIdFor([]), 1);
+  assert.equal(nextIdFor([{ id: 5, text: 'a', done: false }]), 6);
 });
