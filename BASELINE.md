@@ -20,7 +20,7 @@
 - When checking the page at different window widths, horizontal scrolling is present.
 
 ## Limits of these observations
--Payload tested: <img src=x onerror=alert(1)>; it rendered as plain text and no alert fired. This covers one payload only
+- Payload tested: <img src=x onerror=alert(1)>; it rendered as plain text and no alert fired. This covers one payload only
 - The horizontal scrollbar was observed at different widths, but the exact viewport width and the element causing overflow were not recorded.
 
 ## Weaknesses with evidence
