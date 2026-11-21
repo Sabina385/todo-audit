@@ -5,19 +5,24 @@ Small browser ToDo list (add, tick, delete tasks). Used as a teaching repository
 for AI-assisted repository customization and risk review. No backend, no users, no secrets.
 
 ## Architecture
-- code.html: page structure, loads style.css and script.js.
-- script.js: all UI and logic (will be split into todo.js logic + script.js UI during the refactor).
+- code.html: page structure; loads style.css, todo.js, and script.js in that order.
+- todo.js: pure task logic (normalization, add, toggle, and remove); exports the API for Node tests and exposes it to the browser as `window.Todo`.
+- script.js: DOM interaction and rendering; delegates task operations to `Todo` and inserts user-provided task text with `textContent`.
 - style.css: styles.
-- No framework, no dependencies, no build step.
+- No framework or external dependencies; no build step.
 
 ## Setup
 - Requires: a modern browser, Node.js LTS (only for tests/checks), Git.
 - Run the app: open code.html in a browser. No install needed.
+- Check JavaScript syntax: `npm run check`.
+- Run automated tests: `npm test`.
+- No `npm install` is needed; the project uses Node.js built-in test modules only.
 
 ## Safe commands (allowed without asking)
 - git status, git diff, git log, git add, git commit (on a feature branch)
-- node --check script.js
-- node --test (once tests exist)
+- npm run check
+- npm test
+- node --check todo.js, node --check script.js, and node --test
 - Reading any file in this repository
 
 ## Commands that need human approval first
@@ -43,7 +48,8 @@ for AI-assisted repository customization and risk review. No backend, no users, 
 ## Testing expectations
 - Every behavior change needs a test or an explicit note why not.
 - Acceptance criteria are in ACCEPTANCE.md and must still pass after changes.
-- Run before finishing: node --check script.js, then node --test (when available).
+- Automated tests live in `test/todo.test.js` and use `node:test` and `node:assert`.
+- Run before finishing: `npm run check`, then `npm test`.
 - Report real command output; never claim a test passed without running it.
 
 ## Review gates
@@ -53,5 +59,5 @@ for AI-assisted repository customization and risk review. No backend, no users, 
   tests not run, and remaining risks.
 
 ## Known limitations (baseline)
-- No automated tests, linter or CI yet.
+- No linter or CI yet.
 - Tasks are not persisted across reloads.

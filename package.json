@@ -1,0 +1,9 @@
+{
+  "name": "todo-audit",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "check": "node --check todo.js && node --check script.js",
+    "test": "node --test"
+  }
+}
