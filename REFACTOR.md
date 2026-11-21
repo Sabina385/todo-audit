@@ -25,17 +25,19 @@ The malformed `<link>` markup in `code.html` was intentionally left unchanged fo
 
 ## Acceptance criteria
 
+The manual Before and After results below are based on the user's confirmation that all checks passed and the refactor behaves the same. The browser checks were not independently performed in this session, and no screenshots were supplied.
+
 | ID | Before (manual) | After (manual) | After (automated) |
 |---|---|---|---|
-| AC1 | Pass for the submitted XSS test string: user reported it appeared as a task | Not run here; browser check pending | Pass |
-| AC2 | Not recorded | Not run here; browser check pending | Pass |
-| AC3 | Not recorded | Not run here; browser check pending | Pass |
-| AC4 | Not recorded | Not run here; browser check pending | Pass |
-| AC5 | User reported the test string appeared as task text and no alert appeared; exact payload not recorded | Not run here; browser check pending | Pass for task-data string and static check that UI code avoids HTML-injecting APIs |
+| AC1 | Pass (user-confirmed) | Pass (user-confirmed) | Pass |
+| AC2 | Pass (user-confirmed) | Pass (user-confirmed) | Pass |
+| AC3 | Pass (user-confirmed) | Pass (user-confirmed) | Pass |
+| AC4 | Pass (user-confirmed) | Pass (user-confirmed) | Pass |
+| AC5 | Pass for tested input; user reported task text appeared and no alert opened | Pass for tested input (user-confirmed) | Pass for task-data string and static check that UI code avoids HTML-injecting APIs |
 
-The automated checks cover logic and a static source-code property. They do not exercise the DOM in a browser. Before/after browser checks for AC1–AC5 remain to be completed manually.
+The automated checks cover logic and a static source-code property. They do not exercise DOM behavior in a browser. The user's manual confirmation is recorded above; screenshots remain to be added to `evidence/` if required for submission.
 
-## Real command output
+## Verification commands and results
 
 PowerShell blocked `npm.ps1` under its execution policy, so the equivalent Windows command shim `npm.cmd` was used.
 
@@ -72,7 +74,3 @@ PowerShell blocked `npm.ps1` under its execution policy, so the equivalent Windo
 ℹ skipped 0
 ℹ todo 0
 ```
-
-## Manual follow-up
-
-Open `code.html` in a browser and verify AC1–AC5. Record the results in the table above and capture any requested evidence in an `evidence/` folder. Do not treat the automated AC5 checks as a substitute for the browser XSS check.
