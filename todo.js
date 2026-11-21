@@ -20,7 +20,40 @@ function removeTask(tasks, id) {
   return tasks.filter((task) => task.id !== id);
 }
 
-const todoApi = { normalizeTask, addTask, toggleTask, removeTask };
+function nextIdFor(tasks) {
+  const maxId = tasks.reduce((max, task) => {
+    if (Number.isSafeInteger(task?.id) && task.id > max) return task.id;
+    return max;
+  }, 0);
+  return maxId + 1;
+}
+
+function serialize(tasks) {
+  return JSON.stringify(tasks);
+}
+
+function deserialize(raw) {
+  if (typeof raw !== 'string') return [];
+  try {
+    const data = JSON.parse(raw);
+    if (!Array.isArray(data)) return [];
+    return data
+      .filter(
+        (task) =>
+          task &&
+          Number.isSafeInteger(task.id) &&
+          task.id > 0 &&
+          typeof task.text === 'string' &&
+          task.text.trim().length > 0 &&
+          typeof task.done === 'boolean'
+      )
+      .map(({ id, text, done }) => ({ id, text, done }));
+  } catch (e) {
+    return [];
+  }
+}
+
+const todoApi = { normalizeTask, addTask, toggleTask, removeTask, nextIdFor, serialize, deserialize };
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = todoApi;
